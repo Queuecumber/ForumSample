@@ -1,0 +1,32 @@
+{
+  "name": "Forum Sample Client",
+  "version": "0.0.1",
+  "authors": [
+    "Max Ehrlich <max.ehlrlich@sri.com>"
+  ],
+  "description": "Sample forum web client",
+  "main": "source/forum.js",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "build",
+    "test",
+    "tests",
+    "Gruntfile",
+    "package.json"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.14",
+    "underscore": "~1.6.0",
+    "jquery": "~2.1.1",
+    "domready": "~1.0.2",
+    "bootstrap": "~3.2.0",
+    "knockout-3.1.0": "http://knockoutjs.com/downloads/knockout-3.1.0.js",
+    "crossroads.js": "~0.12.0",
+    "js-signals": "~1.0.0",
+    "hasher": "~1.2.0",
+    "application": "Queuecumber/Applicationjs#0.9"
+  }
+}
