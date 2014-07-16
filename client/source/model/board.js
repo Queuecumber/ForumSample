@@ -4,6 +4,8 @@ define(['knockout'], function (ko)
     {
         this.creator = ko.observable();
 
+        this.title = ko.observable('');
+
         this.boards = ko.observableArray([]);
 
         this.threads = ko.observableArray([]);

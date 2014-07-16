@@ -2,8 +2,10 @@ define(['knockout'], function (ko)
 {
     var forum = function ()
     {
-        var creator = ko.observable();
+        this.creator = ko.observable();
 
-        var boards = ko.observableArray([]);
+        this.title = ko.observable('');
+
+        this.boards = ko.observableArray([]);
     };
 });

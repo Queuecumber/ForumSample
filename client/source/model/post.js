@@ -2,13 +2,13 @@ define(['knockout'], function (ko)
 {
     var post = function ()
     {
-        var creator = ko.observable();
+        this.creator = ko.observable();
 
-        var date = ko.observable();
+        this.title = ko.observable('');
 
-        var title = ko.observable('');
+        this.date = ko.observable();
 
-        var body = ko.observable('');
+        this.body = ko.observable('');
     };
 
     return post;
