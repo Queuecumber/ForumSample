@@ -29,26 +29,18 @@ module.exports = function(grunt) {
             prd: {
                 src: 'source/index.html',
                 dest: 'build/index.html'
-            },
-            loginprd: {
-                src: 'source/login.html',
-                dest: 'build/login.html'
-            },
-            logindev: {
-                src: 'source/login.html',
-                dest: 'build/login.html'
             }
         },
         bower: {
             target: {
-                rjsConfig: 'source/script/Aurora.js',
+                rjsConfig: 'source/main.js',
                 options: {
                     baseUrl: 'source'
                 }
             }
         },
         jshint: {
-            all: ['Gruntfile.js', 'source/**/*.js', '!source/script/primus.js'],
+            all: ['Gruntfile.js', 'source/**/*.js'],
             options: {
                 multistr: true,
                 browser: true,
@@ -58,28 +50,18 @@ module.exports = function(grunt) {
             },
 
         },
-        watch: {
-            // If any client-side JS changes
-            clientDev: {
-                files: [ 'source/**/*' ],
-                tasks: ['dev'],
-                options: {
-                    spawn: false,
-                }
-            }
-        },
         requirejs: {
             options: {
                 baseUrl:'./'
             },
             build: {
                 options: {
-                    modules: [{name:'script/Aurora'}],
+                    modules: [{name:'script/main'}],
                     dir: 'build',
                     appDir: 'source',
                     fileExclusionRegExp: /.*\.less/,
                     removeCombined:true,
-                    mainConfigFile: "source/script/Aurora.js",
+                    mainConfigFile: "source/main.js",
                 }
             }
         },
@@ -90,7 +72,7 @@ module.exports = function(grunt) {
                     optimization: 2
                 },
                 files: {
-                    'build/aladdin.min.css': ['source/**/*.less']
+                    'build/forum.min.css': ['source/**/*.less']
                 }
             },
             dev: {
@@ -112,19 +94,16 @@ module.exports = function(grunt) {
             build: {
                 files: [{
                     src: 'bower_components/requirejs/require.js',
-                    dest: 'build/script/require.js'
+                    dest: 'build/require.js'
                 }, {
                     src: 'bower_components/bootstrap/dist/css/bootstrap.min.css',
                     dest: 'build/bootstrap.min.css'
-                }, {
-                    src: 'source/components/LandingPage/aurora_header_bg.jpg',
-                    dest: 'build/aurora_header_bg.jpg'
                 }]
             },
             dev: {
                 files: [{
                         src: 'bower_components/requirejs/require.js',
-                        dest: 'build/script/require.js'
+                        dest: 'build/require.js'
                     }, {
                         expand: true,
                         cwd: 'source/',
@@ -149,15 +128,6 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('install', 'Install frontend dependencies.', function() {
-        var exec = require('child_process').exec;
-        var cb = this.async();
-        exec('bower install', {cwd: './frontend'}, function(err, stdout, stderr) {
-            console.log(stdout);
-            cb();
-        });
-    });
-
     grunt.registerTask('listcss', 'creates a variable which holds a list of css links', function(target) {
         var files = ['source/**/*.less'];
         var cssList = '';
@@ -180,8 +150,7 @@ module.exports = function(grunt) {
     
     // Default task(s).
     grunt.registerTask('default', ['install', 'jshint']);
-    grunt.registerTask('bower', ['bower']);
-    grunt.registerTask('build', ['env:prd', 'clean', 'requirejs:build', 'less:build', 'copy:build', 'preprocess:prd', 'preprocess:loginprd']);
-    grunt.registerTask('dev', ['env:dev', 'clean', 'less:dev', 'listcss', 'copy:dev', 'preprocess:dev', 'preprocess:logindev']);
+    grunt.registerTask('build', ['env:prd', 'clean', 'requirejs:build', 'less:build', 'copy:build', 'preprocess:prd']);
+    grunt.registerTask('dev', ['env:dev', 'clean', 'less:dev', 'listcss', 'copy:dev', 'preprocess:dev']);
 
 };
