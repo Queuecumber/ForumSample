@@ -8,15 +8,33 @@ create table user
     primary key (email)
 );
 
+create table acl_permissions
+(
+    level int not null auto_increment,
+    name varchar(255) not null,
+    primary key(level)
+);
+
 create table board
 (
     board_id int not null auto_increment,
     creator varchar(255) not null,
     title varchar(255) not null,
+    default_permission int not null,
     parent_board_id int,
     primay key (board_id),
     foreign key (creator) references user(email),
-    foreign key (parent_board_id) references board(board_id)
+    foreign key (parent_board_id) references board(board_id),
+    foreign key (default_permission) references acl_permissions(level)
+);
+
+create table board_acl
+(
+    user varchar(255) not null,
+    board_id int not null,
+    permission int not null,
+    constraint pk_board_acl primary key (user,board_id),
+    foreign key (permission) references acl_permissions(level)
 );
 
 create table thread
@@ -41,18 +59,3 @@ create table post
     foreign key (thread_id) references thread(thread_id)
 );
 
-create table acl_permissions
-(
-    level int not null auto_increment,
-    name varchar(255) not null,
-    primary key(level)
-);
-
-create table board_acl
-(
-    user varchar(255) not null,
-    board_id int not null,
-    permission int not null,
-    constraint pk_board_acl primary key (user,board_id),
-    foreign key (permission) references acl_permissions(level)
-);
