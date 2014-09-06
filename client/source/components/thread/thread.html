@@ -1,0 +1,10 @@
+<header>
+    <ol class="breadcrumb">
+    </ol>
+</header>
+<main data-bind="with: thread">
+    <h3 data-bind="text: title"></h3>
+    <section data-bind="foreach: posts">
+        <div data-name="posts" data-component="post"/>
+    </section>
+</main>
