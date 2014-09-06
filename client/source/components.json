@@ -3,5 +3,10 @@
         "name": "post",
         "view": "components/post/post.html",
         "viewModel": "components/post/post/js"
+    },
+    {
+        "name": "thread",
+        "view": "components/thread/thread.html",
+        "viewModel": "components/thread/thread.js"
     }
 ]
