@@ -1,5 +1,7 @@
 create database forum;
 
+use forum;
+
 create table user
 (
     email varchar(255) not null,
@@ -22,7 +24,7 @@ create table board
     title varchar(255) not null,
     default_permission int not null,
     parent_board_id int,
-    primay key (board_id),
+    primary key (board_id),
     foreign key (creator) references user(email),
     foreign key (parent_board_id) references board(board_id),
     foreign key (default_permission) references acl_permissions(level)
@@ -58,4 +60,3 @@ create table post
     foreign key (creator) references user(email),
     foreign key (thread_id) references thread(thread_id)
 );
-
