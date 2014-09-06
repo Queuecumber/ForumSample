@@ -1,0 +1,7 @@
+[
+    {
+        "name": "post",
+        "view": "components/post/post.html",
+        "viewModel": "components/post/post/js"
+    }
+]
