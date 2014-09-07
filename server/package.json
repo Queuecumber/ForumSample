@@ -1,0 +1,12 @@
+{
+    "name": "Forum",
+    "description": "Forum Sample",
+    "private": true,
+    "dependencies": {
+        "express": "~4.0.0",
+        "config": "~0.4.33",
+        "cookie-parser": "~1.0.1",
+        "express-session": "~1.0.3",
+        "bunyan": "~0.21.3"
+    }
+}
