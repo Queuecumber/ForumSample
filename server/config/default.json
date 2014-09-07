@@ -1,0 +1,18 @@
+{
+    "app": {
+        "name": "Forum",
+        "host": "localhost",
+        "sessionKey": "FORUM",
+        "sessionSecret": "ForumFrontEndSessionSecretKeyHereChangeForProduction",
+        "port": 3000,
+        "ssl": false,
+        "public": "../client/build"
+    },
+    "log": {
+        "app_name": "forum",
+        "type": "rotating-file",
+        "path": "log/http.log",
+        "period": "1d",
+        "count": 3
+    }
+}
