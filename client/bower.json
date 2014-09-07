@@ -1,10 +1,10 @@
 {
-  "name": "Forum Sample Client",
+  "name": "Forum",
   "version": "0.0.1",
   "authors": [
-    "Max Ehrlich <max.ehlrlich@sri.com>"
+    "Max Ehrlich <max.ehr@gmail.com>"
   ],
-  "description": "Sample forum web client",
+  "description": "Forum Sample",
   "main": "source/main.js",
   "private": true,
   "ignore": [
