@@ -14,5 +14,14 @@
         "path": "log/http.log",
         "period": "1d",
         "count": 3
+    },
+    "database": {
+        "name": "forum",
+        "user": "mehrlich",
+        "password": "",
+        "params": {
+            "dialect": "mariadb",
+            "port": 3306
+        }
     }
 }
