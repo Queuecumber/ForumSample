@@ -29,4 +29,4 @@ server.use(express.static(config.app.public));
 
 server.listen(config.app.port);
 
-process.log.info("Server listening on port " + config.app.port);
+process.log.info('Server listening on port ' + config.app.port);
