@@ -1,12 +1,17 @@
 // Set up global config and logging
 var config = require('config');
 var bunyan = require('bunyan');
+var BunyanFormattedOutput = require('bunyan-prettystream');
+
+var formatStdOutLog = new BunyanFormattedOutput();
+formatStdOutLog.pipe(process.stdout);
+
 
 process.log = bunyan.createLogger({
     name: config.log.app_name,
     serializer: bunyan.stdSerializers,
     streams: [{
-        stream: process.stdout,
+        stream: formatStdOutLog,
         level: config.log.level
     },{
         type: config.log.type,
