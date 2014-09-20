@@ -9,8 +9,8 @@ var realtime = {
         realtime.io = new SocketIO(srv);
 
         realtime.io.on('connection', realtime.clientConnected);
-        
-        process.log.info('Realtime communication established');
+
+        process.log.info('Realtime communication listening');
     },
 
     clientConnected: function (socket)
