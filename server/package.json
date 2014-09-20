@@ -12,6 +12,7 @@
     "sequelize": "~2.0.0-dev13",
     "mariasql": "~0.1.21",
     "socket.io": "~1.1.0",
-    "redis": "~0.12.1"
+    "redis": "~0.12.1",
+    "connect-redis": "~2.1.0"
   }
 }

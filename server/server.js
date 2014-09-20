@@ -27,10 +27,19 @@ var express = require('express');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var app = require('./app');
+var RedisStore = require('connect-redis')(session);
+
 var server = express();
 
 server.use(cookieParser());
-server.use(session({secret: config.app.sessionSecret}));
+server.use(session({
+    store: new RedisStore({
+        host: config.redis.host,
+        port: config.redis.port,
+        prefix: 'forum-session:'
+    }),
+    secret: config.app.sessionSecret
+}));
 server.use(express.static(config.app.public));
 
 app.start(server);
