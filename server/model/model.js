@@ -1,5 +1,6 @@
 var config = require('config');
 var Sequelize = require('sequelize');
+var emitter = requrie('redis').createClient(config.redis.port, config.redis.host);
 var db = new Sequelize(config.database.name, config.database.user, config.database.password, config.database.params);
 
 db.authenticate().complete(function (err)
@@ -22,15 +23,15 @@ var thread = require('./thread');
 var post = require('./post');
 
 module.exports = {
-    user: user(db),
+    user: user(db, emitter),
 
-    aclPermission: aclPermission(db),
+    aclPermission: aclPermission(db, emitter),
 
-    board: board(db),
+    board: board(db, emitter),
 
-    boardAcl: boardAcl(db),
+    boardAcl: boardAcl(db, emitter),
 
-    thread: thread(db),
+    thread: thread(db, emitter),
 
-    post: post(db)
+    post: post(db, emitter)
 };

@@ -29,6 +29,23 @@ module.exports = function (db)
         }
     },{
         tableName: 'post',
-        timestamps: false
+        timestamps: false,
+        hooks: {
+            afterCreate: function (post, next)
+            {
+                emitter.publish('thread:' + post.thread + ':post-added', JSON.stringify(post));
+                next(null, post);
+            },
+            afterUpdate: function (post, next)
+            {
+                emitter.publish('thread:' + post.thread + ':post-edited', JSON.stringify(post));
+                next(null, post);
+            },
+            afterDestroy: function (post, next)
+            {
+                emitter.publish('thread:' + post.thread + ':post-deleted', JSON.stringify(post));
+                next(null, board);
+            }
+        }
     });
 };

@@ -25,6 +25,12 @@ module.exports = function (db)
         }
     },{
         tableName: 'board_acl',
-        timestamps: false
+        timestamps: false,
+        hooks: {
+            afterUpdate: function (boardAcl, next)
+            {
+                emitter.publish('user:' + boardAcl.user + ':permissions-changed', JSON.stringify(boardAcl));
+                next(null, boardAcl);
+            }
     });
 };
