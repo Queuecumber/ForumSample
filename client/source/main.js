@@ -7,11 +7,15 @@ require.config({
             domready: 'bower_components/domready/ready',
             bootstrap: 'bower_components/bootstrap/dist/js/bootstrap',
             crossroads: 'bower_components/crosroads.js/dist/crossroads.min',
-            application: 'bower_components/application/application'
+            application: 'bower_components/application/application',
+            socketio: 'bower_components/socket.io-client/socket.io'
         },
         shim: {
             'boostrap': {
                 deps: ['jquery']
+            },
+            'socketio': {
+                exports: 'io'
             }
         }
 });
