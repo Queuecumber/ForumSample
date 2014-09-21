@@ -26,12 +26,12 @@ var realtime = {
 
     initiate: function (socket)
     {
-        socket.on('observe', function (endpoint)
+        socket.on('join', function (endpoint)
         {
             socket.join(endpoint);
         });
 
-        socket.on('ignore', function (endpoint)
+        socket.on('leave', function (endpoint)
         {
             socket.leave(endpoint);
         });
