@@ -29,7 +29,7 @@ module.exports = function (db)
         hooks: {
             afterUpdate: function (boardAcl, next)
             {
-                emitter.publish('user:' + boardAcl.user + ':permissions-changed', JSON.stringify(boardAcl));
+                emitter.emit('user:' + boardAcl.user + ':permissions-changed', boardAcl);
                 next(null, boardAcl);
             }
     });

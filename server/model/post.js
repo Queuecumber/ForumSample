@@ -33,17 +33,17 @@ module.exports = function (db)
         hooks: {
             afterCreate: function (post, next)
             {
-                emitter.publish('thread:' + post.thread + ':post-added', JSON.stringify(post));
+                emitter.emit('thread:' + post.thread + ':post-added', post);
                 next(null, post);
             },
             afterUpdate: function (post, next)
             {
-                emitter.publish('thread:' + post.thread + ':post-edited', JSON.stringify(post));
+                emitter.emit('thread:' + post.thread + ':post-edited', post);
                 next(null, post);
             },
             afterDestroy: function (post, next)
             {
-                emitter.publish('thread:' + post.thread + ':post-deleted', JSON.stringify(post));
+                emitter.emit('thread:' + post.thread + ':post-deleted', post);
                 next(null, board);
             }
         }

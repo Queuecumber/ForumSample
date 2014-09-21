@@ -36,20 +36,20 @@ module.exports = function (db, emitter)
             afterCreate: function (board, next)
             {
                 if(board.parentBoard)
-                    emitter.publish('board:' + board.parentBoard + ':subboard-added', JSON.stringify(board));
+                    emitter.emit('board:' + board.parentBoard + ':subboard-added', board);
                 else
-                    emitter.publish(':board-added', JSON.stringify(board));
+                    emitter.emit(':board-added', JSON.stringify(board));
 
                 next(null, board);
             },
             afterUpdate: function (board, next)
             {
-                emitter.publish('board:' + board.boardId + ':updated', JSON.stringify(board));
+                emitter.emit('board:' + board.boardId + ':updated', board);
                 next(null, board);
             },
             afterDestroy: function (board, next)
             {
-                emitter.publish('board:' + board.boardId + ':destroyed', JSON.stringify(board));
+                emitter.emit('board:' + board.boardId + ':destroyed', board);
                 next(null, board);
             }
         }

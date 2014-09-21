@@ -32,17 +32,17 @@ module.exports = function (db, emitter)
         hooks: {
             afterCreate: function (thread, next)
             {
-                emitter.publish('board:' + thread.board + ':thread-added', JSON.stringify(thread));
+                emitter.emit('board:' + thread.board + ':thread-added', thread);
                 next(null, thread);
             },
             afterUpdate: function (thread, next)
             {
-                emitter.publish('thread:' + thread.threadId + ':updated', JSON.stringify(thread));
+                emitter.emit('thread:' + thread.threadId + ':updated', thread);
                 next(null, thread);
             },
             afterDestroy: function (thread, next)
             {
-                emitter.publish('thread:' + thread.threadId + ':destroyed', JSON.stringify(thread));
+                emitter.emit('thread:' + thread.threadId + ':destroyed', thread);
                 next(null, thread);
             }
         }

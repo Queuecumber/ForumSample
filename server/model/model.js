@@ -1,6 +1,6 @@
 var config = require('config');
 var Sequelize = require('sequelize');
-var emitter = requrie('redis').createClient(config.redis.port, config.redis.host);
+var redis = requrie('redis').createClient(config.redis.port, config.redis.host);
 var db = new Sequelize(config.database.name, config.database.user, config.database.password, config.database.params);
 
 db.authenticate().complete(function (err)
@@ -21,6 +21,14 @@ var board = require('./board');
 var boardAcl = require('./boardAcl');
 var thread = require('./thread');
 var post = require('./post');
+
+// Normalize event API
+var emitter = {
+    emit: function (channel, data)
+    {
+        return redis.publish(channel, JSON.stringify(data));
+    }
+}
 
 module.exports = {
     user: user(db, emitter),
