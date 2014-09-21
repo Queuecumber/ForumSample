@@ -42,7 +42,7 @@ module.exports = function (db, emitter)
             },
             afterDestroy: function (thread, next)
             {
-                emitter.emit('thread:' + thread.threadId + ':destroyed', thread);
+                emitter.emit('board:' + thread.board + ':post-removed', thread);
                 next(null, thread);
             }
         }
