@@ -9,6 +9,9 @@ define(['knockout'], function (ko)
     {
         default = default || 'downstream';
 
+        if(isObservableArray(target))
+            return target.extend({ currentArray: default });
+
         var currentObservable = ko.computed({
             read: function ()
             {
