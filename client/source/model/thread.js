@@ -2,34 +2,33 @@ define(['knockout', 'socketio'], function (ko, io)
 {
     var thread = function (threadModel)
     {
-        // data
+        // id
         this.id = threadModel.id;
 
+        // Inform the server that we are interested in events on this object
+        var socket = io();
+        socket.emit('join', 'thread:' + this.id);
+
+        // Data fields
         this.creator = threadModel.user;
 
-        this.title = ko.observable(threadModel.title).extend({directional: 'downstream'});
+        this.title = ko.observable(threadModel.title).extend({coupling: {
+            socket: socket,
+            channel: 'thread:' + this.id,
+            updated: {
+                event: ':updated',
+                property: 'title'
+            }
+        }});
 
-        this.posts = ko.observableArray([]).extend({directional: 'downstream'});
-
-        // server mutations
-        var socket = io();
-        socket.emit('join', 'thread:' + id);
-
-        socket.on('thread:' + id + ':updated', function (updatedThread)
-        {
-            this.title.upstream(updatedThread.title);
-        }.bind(this));
-
-        // client mutations
-        this.title.subscribe(function (newTitle)
-        {
-            socket.emit('downstream', {
-                channel: 'thread:' + id + ':updated',
-                data: this.serialize()
-            });
-        }, this, 'downstream');
-
-        // TODO fill in post add/remove mutations
+        this.posts = ko.observableArray([]).extend({coupling: {
+            socket: socket,
+            channel: 'thread:' this.id,
+            delta: {
+                added: ':post-added',
+                removed: ':post-removed'
+            }
+        }});
 
         // serialize
         this.serialize = function ()
@@ -43,7 +42,8 @@ define(['knockout', 'socketio'], function (ko, io)
         // dispose
         this.dispose = function ()
         {
-            socket.emit('leave', 'thread:' + id);
+            // Tell the server we are no longer interested in events on this object
+            socket.emit('leave', 'thread:' + this.id);
         };
     };
 
