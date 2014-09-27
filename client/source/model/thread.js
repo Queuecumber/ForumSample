@@ -7,9 +7,9 @@ define(['knockout', 'socketio'], function (ko, io)
 
         this.creator = threadModel.user;
 
-        this.title = ko.observable(threadModel.title);
+        this.title = ko.observable(threadModel.title).extend({directional: 'downstream'});
 
-        this.posts = ko.observableArray([]);
+        this.posts = ko.observableArray([]).extend({directional: 'downstream'});
 
         // server mutations
         var socket = io();
@@ -17,7 +17,7 @@ define(['knockout', 'socketio'], function (ko, io)
 
         socket.on('thread:' + id + ':updated', function (updatedThread)
         {
-            this.title(updatedThread.title);
+            this.title.upstream(updatedThread.title);
         }.bind(this));
 
         // client mutations
@@ -27,7 +27,7 @@ define(['knockout', 'socketio'], function (ko, io)
                 channel: 'thread:' + id + ':updated',
                 data: this.serialize()
             });
-        }.bind(this));
+        }, this, 'downstream');
 
         // TODO fill in post add/remove mutations
 
