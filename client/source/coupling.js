@@ -8,6 +8,7 @@ define(['knockout'], function (ko)
         if(!'channel' in settings)
             throw new Error('Coupled observables require a channel to communicate on');
 
+        // Using a downstream current (events by default flow from client->server)
         target = target.extend({current: 'downstream'});
 
         // Scalar update
