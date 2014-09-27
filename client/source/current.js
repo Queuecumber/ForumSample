@@ -9,60 +9,41 @@ define(['knockout'], function (ko)
     {
         default = default || 'downstream';
 
-        if(default != 'downstream' && default != 'upstream')
-            throw new Error('Current must be either upstream or downstream by default');
-
-        target.upstream = function (value)
-        {
-            target(value);
-
-            if(default !== 'upstream')
-                target.notifySubscribers(value, 'upstream');
-        };
-
-        target.downstream = function (value)
-        {
-            target(value);
-
-            if(default !== 'downstream')
-                target.notifySubscribers(value, 'downstream');
-        };
-
-        target.subscribe(function (value)
-        {
-            target.notifySubscribers(value, default);
+        var currentObservable = ko.computed({
+            read: function ()
+            {
+                return target().value;
+            },
+            write: function (val)
+            {
+                target({
+                    direction: default,
+                    value: val
+                });
+            }
         });
 
-        if(isObservableArray(target))
+        currentObservable.upstream = function (val)
         {
-            // TODO make this work with arrays
-            
-            target.subscribe(function (changes)
-            {
-                target.notifySubscribers(changes, default + '-arrayChange');
-            }, null, 'arrayChange');
+            target({
+                direction: 'upstream',
+                value: val
+            });
+        };
 
-            target.push_upstream = function (val)
-            {
+        currentObservable.downstream = function (val)
+        {
+            target({
+                direction: 'downstream',
+                value: val
+            });
+        };
 
-            };
+        target.subscribe(function (val)
+        {
+            currentObservable.notifySubscribers(val.value, val.direction);
+        });
 
-            target.remove_upstream = function (pred)
-            {
-
-            };
-
-            target.push_downstream = function (val)
-            {
-
-            };
-
-            target.push_upstream = function (pred)
-            {
-
-            };
-        }
-
-        return target;
+        return currentObservable;
     };
 });
