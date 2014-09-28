@@ -24,5 +24,6 @@ require.config({
 require(['application', 'model'], function (application, model)
 {
     application.model(model);
+    model.sync();
     application.compose();
 });
