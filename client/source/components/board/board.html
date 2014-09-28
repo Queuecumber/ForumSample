@@ -1,0 +1,19 @@
+<section class="panel panel-default" data-bind="visible: boards().length > 0">
+    <div class="panel-heading">Boards</div>
+    <div class="panel-body">
+        <div data-bind="foreach: boards">
+            <h2 data-bind="text: title"></h2>
+            <span data-bind="text: user.name"></span>
+        </div>
+    </div>
+</section>
+
+<section class="panel panel-default" data-bind="visible: threads().length > 0">
+    <div class="panel-header">Threads</div>
+    <div class="panel-body">
+        <div data-bind="foreach: threads">
+            <h2 data-bind="text: title"></h2>
+            <span data-binds="text: user.name"></span>
+        </div>
+    </div>
+</section>

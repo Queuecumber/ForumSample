@@ -2,11 +2,16 @@
     {
         "name": "post",
         "view": "components/post/post.html",
-        "viewModel": "components/post/post/js"
+        "viewModel": "components/post/post.js"
     },
     {
         "name": "thread",
         "view": "components/thread/thread.html",
         "viewModel": "components/thread/thread.js"
+    },
+    {
+        "name": "board",
+        "view": "components/board/board.html",
+        "viewModel": "components/board/board.js"
     }
 ]
