@@ -1,8 +1,16 @@
 define(['knockout'], function (ko)
-{    
-    ko.extenders.currentArray = function (target, default)
+{
+    ko.extenders.currentArray = function (target, defaultDirection)
     {
-        default = default || 'downstream';
+        defaultDirection = defaultDirection || 'downstream';
+
+        target(target().map(function (c)
+        {
+            return {
+                value: c,
+                direction: defaultDirection
+            };
+        }));
 
         var currentObservable = ko.computed({
             read: function ()
@@ -18,7 +26,7 @@ define(['knockout'], function (ko)
                 {
                     return {
                         value: v,
-                        direction: default
+                        direction: defaultDirection
                     };
                 }));
             }
@@ -69,7 +77,7 @@ define(['knockout'], function (ko)
             if(down.length)
                 currentObservable.notifySubscribers(down, 'downstream-arrayChange');
 
-            var bidirectional = changes.map(function (c) { c.value = c.value.value; return c;});
+            var bidirectional = changes;
 
             currentObservable.notifySubscribers(bidirectional, 'arrayChange');
 
@@ -96,7 +104,7 @@ define(['knockout'], function (ko)
         {
             return target.push({
                 value: val,
-                direction: default
+                direction: defaultDirection
             });
         };
 
@@ -134,7 +142,7 @@ define(['knockout'], function (ko)
             {
                 if(pred(v.value))
                 {
-                    v.direction = default;
+                    v.direction = defaultDirection;
                     return true;
                 }
 
