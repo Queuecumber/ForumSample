@@ -30,6 +30,7 @@ var app = require('./app');
 var RedisStore = require('connect-redis')(session);
 
 var server = express();
+var http = require('http').createServer(server);
 
 server.use(cookieParser());
 server.use(session({
@@ -42,8 +43,8 @@ server.use(session({
 }));
 server.use(express.static(config.app.public));
 
-app.start(server);
+app.start(http);
 
-server.listen(config.app.port);
+http.listen(config.app.port);
 
 process.log.info('Server listening on port ' + config.app.port);
