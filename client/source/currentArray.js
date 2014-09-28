@@ -1,5 +1,5 @@
 define(['knockout'], function (ko)
-{
+{    
     ko.extenders.currentArray = function (target, default)
     {
         default = default || 'downstream';
@@ -97,6 +97,48 @@ define(['knockout'], function (ko)
             return target.push({
                 value: val,
                 direction: default
+            });
+        };
+
+        currentObservable.remove_upstream = function (pred)
+        {
+            return target.remove(function (v)
+            {
+                if(pred(v.value))
+                {
+                    v.direction = 'upstream';
+                    return true;
+                }
+
+                return false;
+            });
+        };
+
+        currentObservable.remove_downstream = function (pred)
+        {
+            return target.remove(function (v)
+            {
+                if(pred(v.value))
+                {
+                    v.direction = 'downstream';
+                    return true;
+                }
+
+                return false;
+            });
+        };
+
+        currentObservable.remove = function (pred)
+        {
+            return target.remove(function (v)
+            {
+                if(pred(v.value))
+                {
+                    v.direction = default;
+                    return true;
+                }
+
+                return false;
             });
         };
 
