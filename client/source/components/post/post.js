@@ -2,13 +2,11 @@ define(['knockout', 'application'], function (ko, application)
 {
     return function ()
     {
-        var self = this;
+        this.post = ko.observable();
 
-        self.post = ko.observable();
-
-        self.activated.on(function (e, p)
+        this.activated.on(function (e, p)
         {
-            self.post(p);
-        });
+            this.post(p);
+        }.bind(this));
     };
 });
