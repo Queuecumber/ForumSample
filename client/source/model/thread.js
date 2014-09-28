@@ -44,6 +44,11 @@ define(['knockout', 'socketio'], function (ko, io)
         {
             // Tell the server we are no longer interested in events on this object
             socket.emit('leave', 'thread:' + this.id);
+
+            this.title.dipose();
+            this.posts.dispose();
+
+            socket.disconnect();
         };
     };
 
