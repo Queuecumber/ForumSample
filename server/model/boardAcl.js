@@ -32,5 +32,6 @@ module.exports = function (db)
                 emitter.emit('user:' + boardAcl.user + ':permissions-changed', boardAcl);
                 next(null, boardAcl);
             }
+        }
     });
 };

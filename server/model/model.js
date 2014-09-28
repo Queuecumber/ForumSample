@@ -1,6 +1,6 @@
 var config = require('config');
 var Sequelize = require('sequelize');
-var redis = requrie('redis').createClient(config.redis.port, config.redis.host);
+var redis = require('redis').createClient(config.redis.port, config.redis.host);
 var db = new Sequelize(config.database.name, config.database.user, config.database.password, config.database.params);
 
 db.authenticate().complete(function (err)
