@@ -8,6 +8,8 @@ define(['knockout'], function (ko)
         if(!('channel' in settings))
             throw new Error('Coupled observables require a channel to communicate on');
 
+        var subscriptionHandle = null;
+
         // Using a downstream current (events by default flow from client->server)
         target = target.extend({current: 'downstream'});
 
@@ -18,16 +20,17 @@ define(['knockout'], function (ko)
                 throw new Error('Coupled scalar missing updated event name');
 
             // Upstream update (server->client)
-            settings.socket.on(settings.channel + settings.updated.event, function (updated)
+            var update = function (updated)
             {
                 if('property' in settings.updated)
                     target.upstream(updated[settings.updated.property]);
                 else
                     target.upstream(updated);
-            });
+            };
+            settings.socket.on(settings.channel + settings.updated.event, update);
 
             // Downstream update (client->server)
-            target.subscribe(function (updated)
+            subscriptionHandle = target.subscribe(function (updated)
             {
                 if('property' in settings.updated)
                 {
@@ -35,7 +38,7 @@ define(['knockout'], function (ko)
                         channel: settings.channel + settings.updated.event,
                         change: {
                             property: settings.updated.property,
-                            value: 'serialize' in updated ? updated.serialize() : updated
+                            value: 'serialize' in updated ? updated.serialize() : updated;
                         }
                     });
                 }
@@ -49,6 +52,12 @@ define(['knockout'], function (ko)
                     });
                 }
             }, null, 'downstream');
+
+            target.dispose = function ()
+            {
+                subscriptionHandle.dispose();
+                socket.removeListener(settings.channel + settings.updated.event, update);
+            };
         }
         else if('delta' in settings)    // Array update
         {
@@ -56,18 +65,20 @@ define(['knockout'], function (ko)
                 throw new Error('Coupled array missing added or removed event names');
 
             // Upstream add (server->client)
-            socket.on(settings.channel + settings.delta.added, function (val)
+            var deltaAdd = function (val)
             {
                 target.push_upstream(val);
-            });
+            };
+            socket.on(settings.channel + settings.delta.added, deltaAdd);
 
             // Upstream remove (server->client)
-            socket.on(settings.channel + settings.delta.removed, function (val)
+            var deltaRemove = function (val)
             {
                 target.remove_upstream(function (v) { return v.id == val.id; });
-            });
+            };
+            socket.on(settings.channel + settings.delta.removed, deltaRemove);
 
-            target.subscribe(function (changes)
+            subscriptionHandle = target.subscribe(function (changes)
             {
                 changes.forEach(function (change)
                 {
@@ -90,6 +101,13 @@ define(['knockout'], function (ko)
                     });
                 });
             }, null, 'downstream-arrayChange');
+
+            target.dispose = function ()
+            {
+                subscriptionHandle.dispose();
+                socket.removeListener(settings.channel + settings.delta.added, deltaAdd);
+                socket.removeListener(settings.channel + settings.delta.removed, deltaRemove);
+            };
         }
         else
         {
