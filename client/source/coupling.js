@@ -2,10 +2,10 @@ define(['knockout'], function (ko)
 {
     ko.extenders.coupling = function (target, settings)
     {
-        if(!'socket' in settings)
+        if(!('socket' in settings))
             throw new Error('Coupled observables require a socket for communication');
 
-        if(!'channel' in settings)
+        if(!('channel' in settings))
             throw new Error('Coupled observables require a channel to communicate on');
 
         // Using a downstream current (events by default flow from client->server)
@@ -14,7 +14,7 @@ define(['knockout'], function (ko)
         // Scalar update
         if('updated' in settings)
         {
-            if(!'event' in settings.updated)
+            if(!('event' in settings.updated))
                 throw new Error('Coupled scalar missing updated event name');
 
             // Upstream update (server->client)
@@ -52,7 +52,7 @@ define(['knockout'], function (ko)
         }
         else if('delta' in settings)    // Array update
         {
-            if(!'added' in settings.delta || !'removed' in settings.delta)
+            if(!('added' in settings.delta) || !('removed' in settings.delta))
                 throw new Error('Coupled array missing added or removed event names');
 
             // Upstream add (server->client)
