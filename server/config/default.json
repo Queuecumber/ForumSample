@@ -21,7 +21,8 @@
         "password": "",
         "params": {
             "dialect": "mariadb",
-            "port": 3306
+            "port": 3306,
+            "logging": false
         }
     },
     "redis": {
