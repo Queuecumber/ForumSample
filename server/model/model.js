@@ -3,16 +3,13 @@ var Sequelize = require('sequelize');
 var redis = require('redis').createClient(config.redis.port, config.redis.host);
 var db = new Sequelize(config.database.name, config.database.user, config.database.password, config.database.params);
 
-db.authenticate().complete(function (err)
+db.authenticate().then(function ()
 {
-    if(!!err)
-    {
-        throw err;
-    }
-    else
-    {
-        process.log.info('Database connection established');
-    }
+    process.log.info('Database connection established');
+})
+.catch(function (err)
+{
+    throw err;
 });
 
 var user = require('./user');
