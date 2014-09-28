@@ -8,7 +8,8 @@ require.config({
             bootstrap: 'bower_components/bootstrap/dist/js/bootstrap',
             crossroads: 'bower_components/crosroads.js/dist/crossroads.min',
             application: 'bower_components/application/application',
-            socketio: 'bower_components/socket.io-client/socket.io'
+            socketio: 'bower_components/socket.io-client/socket.io',
+            model: 'model/model'
         },
         shim: {
             'boostrap': {
@@ -20,7 +21,8 @@ require.config({
         }
 });
 
-require([], function ()
+require(['application', 'model'], function (application, model)
 {
-
+    application.model(model);
+    application.compose();
 });
