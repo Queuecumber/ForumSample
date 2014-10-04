@@ -23,6 +23,9 @@ var post = require('./post');
 var emitter = {
     emit: function (channel, data)
     {
+        data = data.serialize();
+
+        process.log.info('Publishing upstream change for channel %s with data', channel, data)
         return redis.publish(channel, JSON.stringify(data));
     }
 }
