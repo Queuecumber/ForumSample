@@ -49,7 +49,7 @@ var realtime = {
                     process.log.info('Syncing %d instances to %s', instances.length, socket.handshake.address);
                     instances.forEach(function (i)
                     {
-                        socket.emit('global:-1:board-added', i);
+                        socket.emit('global:-1:board-added', i.serialize());
                     });
                 })
                 .catch(function (err)
@@ -60,10 +60,6 @@ var realtime = {
 
         socket.on('downstream', function (update)
         {
-            // Do the actual model update
-            // update: { channel: 'thread:145:add-post', data: '{post}' }
-            // { channel: thread:145:update, property: title, data: '{title} }
-
             process.log.info(socket.handshake.address, 'reported downstream change ', update);
 
             var channel = update.channel.split(':');
