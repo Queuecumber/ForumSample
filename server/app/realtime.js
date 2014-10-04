@@ -39,13 +39,32 @@ var realtime = {
             socket.leave(endpoint);
         });
 
+        socket.on('sync', function (channel)
+        {
+            process.log.info(socket.handshake.address, 'requested sync for ', channel);
+            model.board
+                .findAll({ where: {parent_board: null}})
+                .then(function (instances)
+                {
+                    process.log.info('Syncing %d instances to %s', instances.length, socket.handshake.address);
+                    instances.forEach(function (i)
+                    {
+                        socket.emit('global:-1:board-added', i);
+                    });
+                })
+                .catch(function (err)
+                {
+                    process.log.error('Error syncing %s for %s: %s', channel, socket.handshake.address, err);
+                });
+        });
+
         socket.on('downstream', function (update)
         {
             // Do the actual model update
             // update: { channel: 'thread:145:add-post', data: '{post}' }
             // { channel: thread:145:update, property: title, data: '{title} }
 
-            process.log.info(socket.handshake.address, 'reported downstream change %j', update);
+            process.log.info(socket.handshake.address, 'reported downstream change ', update);
 
             var channel = update.channel.split(':');
 
@@ -53,7 +72,13 @@ var realtime = {
             var id = channel[1];
             var event = channel[2];
 
-            realtime.applyDownstream(collection, id, event, update);
+            realtime
+                .applyDownstream(collection, id, event, update)
+                .catch(function(err)
+                {
+                    process.log.error('Error applying downstream update (%s:%d).%s=%s for %s: %s',
+                    collection, id, update.property, update.data, socket.handshake.address, err);
+                });
         });
 
         socket.on('disconnect', function ()
@@ -67,7 +92,7 @@ var realtime = {
         switch (event)
         {
             case 'update':
-                model[collection]
+                return model[collection]
                     .find({ where: { id: id }})
                     .then(function (instance)
                     {
@@ -75,11 +100,6 @@ var realtime = {
 
                         instance[update.property] = update.data;
                         instance.save([update.property]);
-                    })
-                    .catch(function(err)
-                    {
-                        process.log.error('Error applying downstream update (%s:%d).%s=%s for %s: %s',
-                        collection, id, update.property, update.data, socket.handshake.address, err);
                     });
                 break;
         }
