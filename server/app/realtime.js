@@ -3,6 +3,7 @@ var socketIO = require('socket.io');
 var httpServer = require('http').Server;
 var model = require('../model');
 var updater = require('redis').createClient(config.redis.port, config.redis.host);
+var Promise = require('promise');
 
 
 var realtime = {
@@ -14,13 +15,16 @@ var realtime = {
 
         process.log.info('Realtime communication listening');
 
-        updater.on('message', function (channel, message)
+        updater.on('pmessage', function (pattern, channel, message)
         {
-            process.log.info(channel, 'reported upstream change %j', message);
+            process.log.info(channel, 'reported upstream change', message);
 
             var room = channel.substring(0, channel.lastIndexOf(':'));
-            realtime.io.to(room).emit(channel, message);
+
+            process.log.info('Informing interested clients in room %s', room);
+            realtime.io.to(room).emit(channel, JSON.parse(message));
         });
+        updater.psubscribe('*');
     },
 
     initiate: function (socket)
@@ -60,7 +64,7 @@ var realtime = {
 
         socket.on('downstream', function (update)
         {
-            process.log.info(socket.handshake.address, 'reported downstream change ', update);
+            process.log.info(socket.handshake.address, 'reported downstream action ', update);
 
             var channel = update.channel.split(':');
 
@@ -72,8 +76,7 @@ var realtime = {
                 .applyDownstream(collection, id, event, update)
                 .catch(function(err)
                 {
-                    process.log.error('Error applying downstream update (%s:%d).%s=%s for %s: %s',
-                    collection, id, update.property, update.data, socket.handshake.address, err);
+                    process.log.error('Error applying downstream action %j for %s: %s', update, socket.handshake.address, err);
                 });
         });
 
@@ -98,6 +101,22 @@ var realtime = {
                         instance.save([update.property]);
                     });
                 break;
+
+            case 'board-added':
+                process.log.info('Adding board ', update.data);
+                return model.board.create({
+                    creator: update.data.creator,
+                    title: update.data.title,
+                    parent_board: update.data.parentBoard
+                })
+                .then(function ()
+                {
+                    process.log.info('Successfully added board', update.data);
+                });
+                break;
+
+            default:
+                return Promise.reject(new Error('Unrecognized downstream action'));
         }
     }
 };
