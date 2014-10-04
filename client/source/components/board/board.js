@@ -22,6 +22,20 @@ define(['knockout', 'application'], function (ko, application)
 
                 application.boards().activate(boardItem);
             });
+
+            this.view().on('click', '.add-board', function ()
+            {
+                this.addBoard().activate();
+            }.bind(this));
+
+            this.addBoard().finished.on(function (e, b)
+            {
+                if(b)
+                {
+                    b.parentBoard = this.model().id;
+                    this.model().boards.push(b);
+                }
+            }.bind(this));
         }.bind(this));
     };
 });
