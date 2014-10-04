@@ -3,7 +3,7 @@ var Sequelize = require('sequelize');
 module.exports = function (db, emitter)
 {
     return db.define('board', {
-        id: {
+        board_id: {
             field: 'board_id',
             autoIncrement: true,
             allowNull: false,
@@ -17,13 +17,13 @@ module.exports = function (db, emitter)
             referencesKey: 'email'
         },
         title: Sequelize.STRING,
-        defaultPermission: {
+        default_permission: {
             field: 'default_permission',
             type: Sequelize.INTEGER,
             references: 'acl_permission',
             referencesKey: 'level'
         },
-        parentBoard: {
+        parent_board: {
             field: 'parent_board',
             type: Sequelize.INTEGER,
             references: 'board',
@@ -38,7 +38,7 @@ module.exports = function (db, emitter)
                 if(board.parentBoard)
                     emitter.emit('board:' + board.parentBoard + ':board-added', board);
                 else
-                    emitter.emit('gloal:-1:board-added', board);
+                    emitter.emit('global:-1:board-added', board);
 
                 next(null, board);
             },
