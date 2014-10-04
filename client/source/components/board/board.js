@@ -2,40 +2,26 @@ define(['knockout', 'application'], function (ko, application)
 {
     return function ()
     {
-        this.modelRoot = ko.observable(null);
+        this.model = ko.observable(null);
 
-        this.boards = ko.computed(function ()
-        {
-            if(this.modelRoot())
-            {
-                return this.modelRoot().boards();
-            }
-            else
-            {
-                return [];
-            }
-        }.bind(this));
-
-        this.threads = ko.computed(function ()
-        {
-            if(this.modelRoot())
-            {
-                return this.modelRoot().threads();
-            }
-            else
-            {
-                return [];
-            }
-        }.bind(this));
-
-        this.modelRoot.subscribe(function (root)
+        this.model.subscribe(function (root)
         {
             root.sync();
         });
 
         this.activated.on(function (e, b)
         {
-            this.modelRoot(b);
+            this.model(b);
+        }.bind(this));
+
+        this.loaded.on(function ()
+        {
+            this.view().on('click', '.board', function (e)
+            {
+                var boardItem = ko.dataFor(e.target);
+
+                application.boards().activate(boardItem);
+            });
         }.bind(this));
     };
 });

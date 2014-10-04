@@ -1,19 +1,23 @@
-<section class="panel panel-default" data-bind="visible: boards().length > 0">
-    <div class="panel-heading">Boards</div>
-    <div class="panel-body">
-        <div data-bind="foreach: boards">
-            <h2 data-bind="text: title"></h2>
-            <span data-bind="text: creator"></span>
+<div data-bind="with: model">
+    <section class="panel panel-default" data-bind="visible: boards().length > 0">
+        <div class="panel-heading">Boards</div>
+        <div class="panel-body">
+            <div data-bind="foreach: boards">
+                <div class="board">
+                    <h2 data-bind="text: title"></h2>
+                    <span data-bind="text: creator"></span>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="panel panel-default" data-bind="visible: threads().length > 0">
-    <div class="panel-header">Threads</div>
-    <div class="panel-body">
-        <div data-bind="foreach: threads">
-            <h2 data-bind="text: title"></h2>
-            <span data-binds="text: creator"></span>
+    <section class="panel panel-default" data-bind="visible: threads().length > 0">
+        <div class="panel-header">Threads</div>
+        <div class="panel-body">
+            <div data-bind="foreach: threads">
+                <h2 data-bind="text: title"></h2>
+                <span data-binds="text: creator"></span>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+</div>
