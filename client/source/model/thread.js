@@ -10,7 +10,7 @@ define(['knockout', 'socketio'], function (ko, io)
         socket.emit('join', 'thread:' + this.id);
 
         // Data fields
-        this.creator = threadModel.user;
+        this.creator = threadModel.creator;
 
         this.title = ko.observable(threadModel.title).extend({coupling: {
             socket: socket,
