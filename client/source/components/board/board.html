@@ -3,7 +3,7 @@
     <div class="panel-body">
         <div data-bind="foreach: boards">
             <h2 data-bind="text: title"></h2>
-            <span data-bind="text: user.name"></span>
+            <span data-bind="text: creator"></span>
         </div>
     </div>
 </section>
@@ -13,7 +13,7 @@
     <div class="panel-body">
         <div data-bind="foreach: threads">
             <h2 data-bind="text: title"></h2>
-            <span data-binds="text: user.name"></span>
+            <span data-binds="text: creator"></span>
         </div>
     </div>
 </section>

@@ -2,20 +2,40 @@ define(['knockout', 'application'], function (ko, application)
 {
     return function ()
     {
-        this.boards = ko.observableArray();
-        this.threads = ko.observableArray();
+        this.modelRoot = ko.observable(null);
 
-        this.activated.on(function (e, b)
+        this.boards = ko.computed(function ()
         {
-            if(b !== undefined)
+            if(this.modelRoot())
             {
-                this.boards(b.boards());
-                this.threads(b.threads());
+                return this.modelRoot().boards();
             }
             else
             {
-                this.boards(application.model().boards());
+                return [];
             }
+        }.bind(this));
+
+        this.threads = ko.computed(function ()
+        {
+            if(this.modelRoot())
+            {
+                return this.modelRoot().threads();
+            }
+            else
+            {
+                return [];
+            }
+        }.bind(this));
+
+        this.modelRoot.subscribe(function (root)
+        {
+            root.sync();
+        });
+
+        this.activated.on(function (e, b)
+        {
+            this.modelRoot(b);
         }.bind(this));
     };
 });

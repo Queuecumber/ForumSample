@@ -10,6 +10,10 @@ require.config({
             application: 'bower_components/application/application',
             socketio: 'bower_components/socket.io-client/socket.io',
             model: 'model/model',
+            thread: 'model/thread'
+            post: 'model/post'
+            user: 'model/user'
+            board: 'model/board'
             current: 'current',
             currentArray: 'currentArray',
             coupling: 'coupling'
@@ -26,7 +30,8 @@ require.config({
 
 require(['current', 'coupling', 'application', 'model'], function (c, cc, application, model)
 {
-    application.model(model);
-    model.sync();
+    var m = new model();
+
+    application.model(m);
     application.compose();
 });
