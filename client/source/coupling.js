@@ -67,6 +67,9 @@ define(['knockout'], function (ko)
             // Upstream add (server->client)
             var deltaAdd = function (val)
             {
+                if('modeler' in settings)
+                    val = new settings.modeler(val);
+
                 target.push_upstream(val);
             };
             settings.socket.on(settings.channel + settings.delta.added, deltaAdd);
