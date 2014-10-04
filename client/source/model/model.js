@@ -1,4 +1,4 @@
-define(['knockout', 'socketio'], function (ko, io)
+define(['knockout', 'socketio', 'board'], function (ko, io, board)
 {
     var model = function ()
     {
@@ -10,6 +10,7 @@ define(['knockout', 'socketio'], function (ko, io)
         this.boards = ko.observableArray([]).extend({coupling: {
             socket: socket,
             channel: 'global:-1',
+            modeler: board,
             delta: {
                 added: ':board-added',
                 removed: ':board-removed'
