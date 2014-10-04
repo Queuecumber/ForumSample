@@ -12,6 +12,11 @@ define(['knockout', 'currentArray'], function (ko)
         if(isObservableArray(target))
             return target.extend({ currentArray: defaultDirection });
 
+        target({
+            value: target(),
+            direction: defaultDirection
+        });
+
         var currentObservable = ko.computed({
             read: function ()
             {
