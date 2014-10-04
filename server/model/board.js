@@ -3,7 +3,7 @@ var Sequelize = require('sequelize');
 module.exports = function (db, emitter)
 {
     return db.define('board', {
-        boardId: {
+        id: {
             field: 'board_id',
             autoIncrement: true,
             allowNull: false,
@@ -36,9 +36,9 @@ module.exports = function (db, emitter)
             afterCreate: function (board, next)
             {
                 if(board.parentBoard)
-                    emitter.emit('board:' + board.parentBoard + ':subboard-added', board);
+                    emitter.emit('board:' + board.parentBoard + ':board-added', board);
                 else
-                    emitter.emit(':board-added', JSON.stringify(board));
+                    emitter.emit('gloal:-1:board-added', board);
 
                 next(null, board);
             },
@@ -51,6 +51,22 @@ module.exports = function (db, emitter)
             {
                 emitter.emit('board:' + board.boardId + ':destroyed', board);
                 next(null, board);
+            }
+        },
+        instanceMethods: {
+            serialize: function ()
+            {
+                var pure = this.values;
+
+                pure.parentBoard = pure.parent_board;
+                pure.id = pure.board_id;
+                pure.defaultPermission = pure.default_permission;
+
+                delete pure.parent_board;
+                delete pure.board_id;
+                delete pure.default_permission;
+
+                return pure;
             }
         }
     });
