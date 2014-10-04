@@ -1,6 +1,6 @@
 define(['knockout', 'socketio'], function (ko, io)
 {
-    var board = function (boardModel)
+    return function (boardModel)
     {
         this.id = boardModel.id;
 
@@ -71,6 +71,4 @@ define(['knockout', 'socketio'], function (ko, io)
             return this.id === other.id;
         };
     };
-
-    return board;
 });
