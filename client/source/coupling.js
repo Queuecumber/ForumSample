@@ -38,7 +38,7 @@ define(['knockout'], function (ko)
                         channel: settings.channel + settings.updated.event,
                         change: {
                             property: settings.updated.property,
-                            value: 'serialize' in updated ? updated.serialize() : updated;
+                            value: 'serialize' in updated ? updated.serialize() : updated
                         }
                     });
                 }
@@ -69,14 +69,14 @@ define(['knockout'], function (ko)
             {
                 target.push_upstream(val);
             };
-            socket.on(settings.channel + settings.delta.added, deltaAdd);
+            settings.socket.on(settings.channel + settings.delta.added, deltaAdd);
 
             // Upstream remove (server->client)
             var deltaRemove = function (val)
             {
                 target.remove_upstream(function (v) { return v.id == val.id; });
             };
-            socket.on(settings.channel + settings.delta.removed, deltaRemove);
+            settings.socket.on(settings.channel + settings.delta.removed, deltaRemove);
 
             subscriptionHandle = target.subscribe(function (changes)
             {

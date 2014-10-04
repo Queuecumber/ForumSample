@@ -1,16 +1,16 @@
-define(['knockout'], function (ko)
+define(['knockout', 'currentArray'], function (ko)
 {
     function isObservableArray(o)
     {
         return ko.isObservable(o) && o.indexOf !== undefined;
     }
 
-    ko.extenders.current = function (target, default)
+    ko.extenders.current = function (target, defaultDirection)
     {
-        default = default || 'downstream';
+        defaultDirection = defaultDirection || 'downstream';
 
         if(isObservableArray(target))
-            return target.extend({ currentArray: default });
+            return target.extend({ currentArray: defaultDirection });
 
         var currentObservable = ko.computed({
             read: function ()
@@ -20,7 +20,7 @@ define(['knockout'], function (ko)
             write: function (val)
             {
                 target({
-                    direction: default,
+                    direction: defaultDirection,
                     value: val
                 });
             }
