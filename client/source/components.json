@@ -13,5 +13,10 @@
         "name": "board",
         "view": "components/board/board.html",
         "viewModel": "components/board/board.js"
+    },
+    {
+        "name": "add-board",
+        "view": "components/add-board/add-board.html",
+        "viewModel": "components/add-board/add-board.js"
     }
 ]
