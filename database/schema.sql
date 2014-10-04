@@ -22,7 +22,7 @@ create table board
     board_id int not null auto_increment,
     creator varchar(255) not null,
     title varchar(255) not null,
-    default_permission int not null,
+    default_permission int,
     parent_board int,
     primary key (board_id),
     foreign key (creator) references user(email),
