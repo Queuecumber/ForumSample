@@ -30,6 +30,11 @@ define(['knockout', 'socketio'], function (ko, io)
             }
         }});
 
+        this.sync = function ()
+        {
+            socket.emit('sync', 'thread:' + this.id);
+        };
+
         // serialize
         this.serialize = function ()
         {
@@ -49,6 +54,16 @@ define(['knockout', 'socketio'], function (ko, io)
             this.posts.dispose();
 
             socket.disconnect();
+        };
+
+        this.toString = function ()
+        {
+            return this.title();
+        };
+
+        this.equals = function (other)
+        {
+            returm this.id === other.id;
         };
     };
 
