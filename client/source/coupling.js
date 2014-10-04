@@ -98,7 +98,7 @@ define(['knockout'], function (ko)
                             break;
                     }
 
-                    socket.emit('downstream', {
+                    settings.socket.emit('downstream', {
                         channel: channel,
                         data: 'serialize' in change.value ? change.value.serialize() : change.value
                     });
