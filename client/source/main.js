@@ -9,7 +9,10 @@ require.config({
             crossroads: 'bower_components/crosroads.js/dist/crossroads.min',
             application: 'bower_components/application/application',
             socketio: 'bower_components/socket.io-client/socket.io',
-            model: 'model/model'
+            model: 'model/model',
+            current: 'current',
+            currentArray: 'currentArray',
+            coupling: 'coupling'
         },
         shim: {
             'boostrap': {
@@ -21,7 +24,7 @@ require.config({
         }
 });
 
-require(['application', 'model'], function (application, model)
+require(['current', 'coupling', 'application', 'model'], function (c, cc, application, model)
 {
     application.model(model);
     model.sync();
