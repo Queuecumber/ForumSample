@@ -11,6 +11,11 @@ define(['knockout', 'application'], function (ko, application)
 
         this.activated.on(function (e, b)
         {
+            if(b.id)
+            {
+                history.pushState(null, null, window.location.href + 'b/' + b.id + '/');
+            }
+
             this.model(b);
         }.bind(this));
 
@@ -25,11 +30,14 @@ define(['knockout', 'application'], function (ko, application)
 
             this.view().on('click', '.add-board', function ()
             {
+                this.view().find('.add-board').hide();
                 this.addBoard().activate();
             }.bind(this));
 
             this.addBoard().finished.on(function (e, b)
             {
+                this.view().find('.add-board').show();
+
                 if(b)
                 {
                     b.parentBoard = this.model().id;
