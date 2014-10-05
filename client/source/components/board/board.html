@@ -1,12 +1,11 @@
-<div data-name="addBoard" data-component="add-board"></div>
+<section>
+    <div data-name="addBoard" data-component="add-board"></div>
+    <button type="button" class="add-board btn btn-default">Add Board</button>
+</section>
 <div data-bind="with: model">
     <section class="panel panel-default" data-bind="visible: boards().length > 0">
         <div class="panel-heading">
             Boards
-
-            <button class="add-board btn btn-sm btn-default">
-                <span class="glyphicon glyphicon-plus"></span>
-            </button>
         </div>
         <div class="panel-body">
             <div data-bind="foreach: boards">
