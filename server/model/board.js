@@ -77,7 +77,7 @@ module.exports = function (db, emitter)
                     {
                         return {
                             instances: instances,
-                            event: 'board:null:board-added'
+                            event: 'board:' + id + ':board-added'
                         };
                     });
             },
