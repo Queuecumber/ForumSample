@@ -3,7 +3,10 @@
     <head>
         <script data-main="main.js" src="bower_components/requirejs/require.js"></script>
 
-        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+<!-- @if NODE_ENV == 'DEVELOPMENT' -->
+        <link rel="stylesheet" media="all" href="../bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+<!-- @echo cssFiles -->
+<!-- @endif -->
 
         <title>Forum</title>
     </head>
