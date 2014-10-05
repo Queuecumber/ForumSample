@@ -5,11 +5,11 @@ define(['knockout', 'socketio', 'board'], function (ko, io, Board)
         this.id = null;
 
         var socket = io();
-        socket.emit('join', 'global:-1');
+        socket.emit('join', 'board:null');
 
         this.boards = ko.observableArray([]).extend({coupling: {
             socket: socket,
-            channel: 'global:-1',
+            channel: 'board:null',
             modeler: Board,
             delta: {
                 added: ':board-added',
@@ -21,12 +21,12 @@ define(['knockout', 'socketio', 'board'], function (ko, io, Board)
 
         this.sync = function ()
         {
-            socket.emit('sync', 'global:-1');
+            socket.emit('sync', 'board:null');
         };
 
         this.dispose = function ()
         {
-            socket.emit('leave', 'global:-1');
+            socket.emit('leave', 'board:null');
 
             this.boards.dispose();
 
