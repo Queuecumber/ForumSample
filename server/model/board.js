@@ -38,7 +38,7 @@ module.exports = function (db, emitter)
                 if(board.parentBoard)
                     emitter.emit('board:' + board.parentBoard + ':board-added', board);
                 else
-                    emitter.emit('global:-1:board-added', board);
+                    emitter.emit('board:null:board-added', board);
 
                 next(null, board);
             },
@@ -67,6 +67,28 @@ module.exports = function (db, emitter)
                 delete pure.default_permission;
 
                 return pure;
+            }
+        },
+        classMethods: {
+            sync: function (id)
+            {
+                return this.findAll({ where: { parent_board: id } })
+                    .then(function (instances)
+                    {
+                        return {
+                            instances: instances,
+                            event: 'board:null:board-added'
+                        };
+                    });
+            },
+
+            'board-added': function (id, board)
+            {
+                return this.create({
+                    creator: board.creator,
+                    title: board.title,
+                    parent_board: id
+                });
             }
         }
     });
