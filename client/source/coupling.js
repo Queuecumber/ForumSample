@@ -98,6 +98,8 @@ define(['knockout'], function (ko)
                             break;
                     }
 
+                    target.remove_upstream(function (v) { return v == change.value; });
+
                     settings.socket.emit('downstream', {
                         channel: channel,
                         data: 'serialize' in change.value ? change.value.serialize() : change.value
