@@ -46,14 +46,17 @@ var realtime = {
         socket.on('sync', function (channel)
         {
             process.log.info(socket.handshake.address, 'requested sync for ', channel);
-            model.board
-                .findAll({ where: {parent_board: null}})
-                .then(function (instances)
+
+            var channel = realtime.parseChannel(channel);
+
+            model[channel.collection]
+                .sync(channel.id)
+                .then(function (info)
                 {
-                    process.log.info('Syncing %d instances to %s', instances.length, socket.handshake.address);
-                    instances.forEach(function (i)
+                    process.log.info('Syncing %d instances to %s', info.instances.length, socket.handshake.address);
+                    info.instances.forEach(function (i)
                     {
-                        socket.emit('global:-1:board-added', i.serialize());
+                        socket.emit(info.event, i.serialize());
                     });
                 })
                 .catch(function (err)
@@ -62,21 +65,21 @@ var realtime = {
                 });
         });
 
-        socket.on('downstream', function (update)
+        socket.on('downstream', function (action)
         {
-            process.log.info(socket.handshake.address, 'reported downstream action ', update);
+            process.log.info(socket.handshake.address, 'reported downstream action ', action);
 
-            var channel = update.channel.split(':');
-
-            var collection = channel[0];
-            var id = channel[1];
-            var event = channel[2];
+            var channel = realtime.parseChannel(action.channel);
 
             realtime
-                .applyDownstream(collection, id, event, update)
+                model[channel.collection][channel.event](channel.id, action.data)
+                .then(function ()
+                {
+                    process.log.info('Successfully applied downstream action %j for %s', action, socket.handshake.address);
+                })
                 .catch(function(err)
                 {
-                    process.log.error('Error applying downstream action %j for %s: %s', update, socket.handshake.address, err);
+                    process.log.error('Error applying downstream action %j for %s: %s', action, socket.handshake.address, err);
                 });
         });
 
@@ -86,38 +89,22 @@ var realtime = {
         });
     },
 
-    applyDownstream: function (collection, id, event, update)
+    parseChannel: function (channel)
     {
-        switch (event)
-        {
-            case 'update':
-                return model[collection]
-                    .find({ where: { id: id }})
-                    .then(function (instance)
-                    {
-                        process.log.info('Applying downstream update (%s:%d).%s=%s', collection, id, update.property, update.data);
+        channel = channel.split(':');
 
-                        instance[update.property] = update.data;
-                        instance.save([update.property]);
-                    });
-                break;
+        var collection = channel[0];
+        var id = channel[1];
+        var event = channel.length > 2 ? channel[2] : null;
 
-            case 'board-added':
-                process.log.info('Adding board ', update.data);
-                return model.board.create({
-                    creator: update.data.creator,
-                    title: update.data.title,
-                    parent_board: update.data.parentBoard
-                })
-                .then(function ()
-                {
-                    process.log.info('Successfully added board', update.data);
-                });
-                break;
+        if(id == 'null')
+            id = null;
 
-            default:
-                return Promise.reject(new Error('Unrecognized downstream action'));
-        }
+        return {
+            collection: collection,
+            id: id,
+            event: event
+        };
     }
 };
 
