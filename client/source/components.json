@@ -18,5 +18,10 @@
         "name": "add-board",
         "view": "components/add-board/add-board.html",
         "viewModel": "components/add-board/add-board.js"
+    },
+    {
+        "name": "add-thread",
+        "view": "components/add-thread/add-thread.html",
+        "viewModel": "components/add-thread/add-thread.js"
     }
 ]
