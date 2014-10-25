@@ -23,23 +23,34 @@ var post = require('./post');
 var emitter = {
     emit: function (channel, data)
     {
-        data = data.serialize();
+        process.log.info('Publishing upstream change for channel %s with data', channel, data);
 
-        process.log.info('Publishing upstream change for channel %s with data', channel, data)
-        return redis.publish(channel, JSON.stringify(data));
+        try
+        {
+            data = data.serialize();
+            return redis.publish(channel, JSON.stringify(data));
+        }
+        catch(err)
+        {
+            process.log.error('Caught exception publishng upstream change for channel %s with data %j: %s', channel, data, err);
+        }
     }
 }
 
-module.exports = {
-    user: user(db, emitter),
+model = {
 
-    aclPermission: aclPermission(db, emitter),
-
-    board: board(db, emitter),
-
-    boardAcl: boardAcl(db, emitter),
-
-    thread: thread(db, emitter),
-
-    post: post(db, emitter)
 };
+
+model.user = user(db, emitter);
+
+model.aclPermission = aclPermission(db, emitter);
+
+model.thread = thread(db, emitter);
+
+model.board = board(db, emitter, model.thread);
+
+model.boardAcl = boardAcl(db, emitter);
+
+model.post = post(db, emitter);
+
+module.exports = model;
