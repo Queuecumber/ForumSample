@@ -27,6 +27,10 @@ if [ ! -f "$NODE_LAUNCH_SCRIPT" ]; then
   exit
 fi
 
+if [ ! $NODE_ENV ]; then
+  export NODE_ENV=production
+fi
+
 if [ ! $NODE_HOT_RELOAD ]; then
   export NODE_HOT_RELOAD=0
 fi
@@ -92,7 +96,7 @@ if [ $NODE_HOT_RELOAD -eq 0 ]; then
     NCMD="$NCMD -e $NODE_LOG_DIR/err.log"
 else
 # supervisor command removed below
-    NCMD="supervisor -n exit -w ./app,./model,$NODE_CONFIG_DIR,$NODE_LAUNCH_SCRIPT"
+    NCMD="supervisor -n exit --debug -w ./app,./model,$NODE_CONFIG_DIR,$NODE_LAUNCH_SCRIPT"
 fi
 
 NCMD="$NCMD $NODE_LAUNCH_SCRIPT"
