@@ -1,6 +1,9 @@
 <section>
-    <div data-name="addBoard" data-component="add-board"></div>
     <button type="button" class="add-board btn btn-default">Add Board</button>
+    <button type="button" class="add-thread btn btn-default">Add Thread</button>
+
+    <div data-name="addBoard" data-component="add-board"></div>
+    <div data-name="addThread" data-component="add-thread"></div>
 </section>
 <div data-bind="with: model">
     <section class="panel panel-default" data-bind="visible: boards().length > 0">
@@ -18,7 +21,7 @@
     </section>
 
     <section class="panel panel-default" data-bind="visible: threads().length > 0">
-        <div class="panel-header">Threads</div>
+        <div class="panel-heading">Threads</div>
         <div class="panel-body">
             <div data-bind="foreach: threads">
                 <h2 data-bind="text: title"></h2>
