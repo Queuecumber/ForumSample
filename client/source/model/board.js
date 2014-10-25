@@ -1,6 +1,6 @@
-define(['knockout', 'socketio'], function (ko, io)
+define(['knockout', 'socketio', 'thread', 'remoteCollection'], function (ko, io, Thread, remoteCollection)
 {
-    return function (boardModel)
+    var Board = function (boardModel)
     {
         this.id = boardModel.id;
 
@@ -9,7 +9,8 @@ define(['knockout', 'socketio'], function (ko, io)
 
         this.creator = boardModel.creator;
 
-        this.title = ko.observable(boardModel.title).extend({coupling: {
+        this.title = ko.observable(boardModel.title);
+        /*.extend({coupling: {
             socket: socket,
             channel: 'board:' + this.id,
             updated: {
@@ -17,24 +18,27 @@ define(['knockout', 'socketio'], function (ko, io)
                 property: 'title'
             }
         }});
+        */
 
-        this.boards = ko.observableArray([]).extend({coupling: {
+        this.boards = remoteCollection([], {
             socket: socket,
             channel: 'board:' + this.id,
+            modeler: Board,
             delta: {
                 added: ':board-added',
                 removed: ':board-removed'
             }
-        }});
+        });
 
-        this.threads = ko.observableArray([]).extend({coupling: {
+        this.threads = remoteCollection([], {
             socket: socket,
             channel: 'board:' + this.id,
+            modeler: Thread,
             delta: {
                 added: ':thread-added',
                 removed: ':thread-removed'
             }
-        }});
+        });
 
         this.sync = function ()
         {
@@ -71,4 +75,6 @@ define(['knockout', 'socketio'], function (ko, io)
             return this.id === other.id;
         };
     };
+
+    return Board;
 });
