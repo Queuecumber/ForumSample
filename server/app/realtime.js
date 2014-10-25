@@ -47,40 +47,59 @@ var realtime = {
         {
             process.log.info(socket.handshake.address, 'requested sync for ', channel);
 
-            var channel = realtime.parseChannel(channel);
+            try
+            {
+                var channel = realtime.parseChannel(channel);
 
-            model[channel.collection]
-                .sync(channel.id)
-                .then(function (info)
-                {
-                    process.log.info('Syncing %d instances to %s', info.instances.length, socket.handshake.address);
-                    info.instances.forEach(function (i)
+                model[channel.collection]
+                    .sync(channel.id)
+                    .then(function (info)
                     {
-                        socket.emit(info.event, i.serialize());
+                        process.log.info('Syncing %d data types to %s', info.length, socket.handshake.address);
+
+                        info.forEach(function (inf)
+                        {
+                            process.log.info('Syncing %d instances to %s using %s', inf.instances.length, socket.handshake.address, inf.event);
+                            inf.instances.forEach(function (i)
+                            {
+                                socket.emit(inf.event, i.serialize());
+                            });
+                        });
+                    })
+                    .catch(function (err)
+                    {
+                        process.log.error('Error syncing %j for %s: %s', channel, socket.handshake.address, err);
                     });
-                })
-                .catch(function (err)
-                {
-                    process.log.error('Error syncing %s for %s: %s', channel, socket.handshake.address, err);
-                });
+            }
+            catch (err)
+            {
+                process.log.error('Caught exception syncing %j for %s: %s', channel, socket.handshake.address, err);
+            }
         });
 
         socket.on('downstream', function (action)
         {
             process.log.info(socket.handshake.address, 'reported downstream action ', action);
 
-            var channel = realtime.parseChannel(action.channel);
+            try
+            {
+                var channel = realtime.parseChannel(action.channel);
 
-            realtime
-                model[channel.collection][channel.event](channel.id, action.data)
-                .then(function ()
-                {
-                    process.log.info('Successfully applied downstream action %j for %s', action, socket.handshake.address);
-                })
-                .catch(function(err)
-                {
-                    process.log.error('Error applying downstream action %j for %s: %s', action, socket.handshake.address, err);
-                });
+                realtime
+                    model[channel.collection][channel.event](channel.id, action.data)
+                    .then(function ()
+                    {
+                        process.log.info('Successfully applied downstream action %j for %s', action, socket.handshake.address);
+                    })
+                    .catch(function(err)
+                    {
+                        process.log.error('Error applying downstream action %j for %s: %s', action, socket.handshake.address, err);
+                    });
+            }
+            catch (err)
+            {
+                process.log.error('Caught exception applying downstream action %j for %s: %s', action, socket.handshake.address, err);
+            }
         });
 
         socket.on('disconnect', function ()
