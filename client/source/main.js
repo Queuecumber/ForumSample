@@ -14,9 +14,7 @@ require.config({
             post: 'model/post',
             user: 'model/user',
             board: 'model/board',
-            current: 'current',
-            currentArray: 'currentArray',
-            coupling: 'coupling'
+            remoteCollection: 'remoteCollection'
         },
         shim: {
             'boostrap': {
@@ -28,7 +26,7 @@ require.config({
         }
 });
 
-require(['current', 'coupling', 'application', 'model'], function (c, cc, application, model)
+require(['application', 'model'], function (application, model)
 {
     var m = new model();
 
