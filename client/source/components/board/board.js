@@ -11,11 +11,6 @@ define(['knockout', 'application'], function (ko, application)
 
         this.activated.on(function (e, b)
         {
-            if(b.id)
-            {
-                history.pushState(null, null, window.location.href + 'b/' + b.id + '/');
-            }
-
             this.model(b);
         }.bind(this));
 
@@ -42,6 +37,23 @@ define(['knockout', 'application'], function (ko, application)
                 {
                     b.parentBoard = this.model().id;
                     this.model().boards.push(b);
+                }
+            }.bind(this));
+
+            this.view().on('click', '.add-thread', function ()
+            {
+                this.view().find('.add-thread').hide();
+                this.addThread().activate();
+            }.bind(this));
+
+            this.addThread().finished.on(function (e, t)
+            {
+                this.view().find('.add-thread').show();
+
+                if(t)
+                {
+                    t.board = this.model().id;
+                    this.model().threads.push(t);
                 }
             }.bind(this));
         }.bind(this));
