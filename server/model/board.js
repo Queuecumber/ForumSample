@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 var Promise = require('promise');
 
-module.exports = function (db, emitter, thread)
+module.exports = function (db, emitter, threadModel)
 {
     return db.define('board', {
         board_id: {
@@ -74,7 +74,7 @@ module.exports = function (db, emitter, thread)
             sync: function (id)
             {
                 var subboards = this.findAll({ where: { parent_board: id }});
-                var threads = thread.findAll({ where: { board: id }});
+                var threads = threadModel.findAll({ where: { board: id }});
 
                 return Promise.all([subboards, threads])
                     .then(function (instances)
@@ -100,7 +100,7 @@ module.exports = function (db, emitter, thread)
 
             'thread-added': function (id, thread)
             {
-                return thread.create({
+                return threadModel.create({
                     creator: thread.creator,
                     title: thread.title,
                     board: id
