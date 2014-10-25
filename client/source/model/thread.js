@@ -1,4 +1,4 @@
-define(['knockout', 'socketio'], function (ko, io)
+define(['knockout', 'socketio', 'remoteCollection'], function (ko, io, remoteCollection)
 {
     var thread = function (threadModel)
     {
@@ -21,14 +21,14 @@ define(['knockout', 'socketio'], function (ko, io)
             }
         }});
 
-        this.posts = ko.observableArray([]).extend({coupling: {
+        this.posts = remoteCollection([], {
             socket: socket,
             channel: 'thread:' + this.id,
             delta: {
                 added: ':post-added',
                 removed: ':post-removed'
             }
-        }});
+        });
 
         this.sync = function ()
         {
