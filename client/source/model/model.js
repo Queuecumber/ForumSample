@@ -1,4 +1,4 @@
-define(['knockout', 'socketio', 'board'], function (ko, io, Board)
+define(['knockout', 'socketio', 'board', 'thread', 'remoteCollection'], function (ko, io, Board, Thread, remoteCollection)
 {
     var model = function ()
     {
@@ -7,7 +7,7 @@ define(['knockout', 'socketio', 'board'], function (ko, io, Board)
         var socket = io();
         socket.emit('join', 'board:null');
 
-        this.boards = ko.observableArray([]).extend({coupling: {
+        this.boards = remoteCollection([], {
             socket: socket,
             channel: 'board:null',
             modeler: Board,
@@ -15,9 +15,17 @@ define(['knockout', 'socketio', 'board'], function (ko, io, Board)
                 added: ':board-added',
                 removed: ':board-removed'
             }
-        }});
+        });
 
-        this.threads = ko.observableArray([]);
+        this.threads = remoteCollection([], {
+            socket: socket,
+            channel: 'board:null',
+            modeler: Thread,
+            delta: {
+                added: ':thread-added',
+                removed: ':thread-removed'
+            }
+        });
 
         this.sync = function ()
         {
