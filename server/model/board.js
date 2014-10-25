@@ -1,6 +1,7 @@
 var Sequelize = require('sequelize');
+var Promise = require('promise');
 
-module.exports = function (db, emitter)
+module.exports = function (db, emitter, thread)
 {
     return db.define('board', {
         board_id: {
@@ -72,13 +73,19 @@ module.exports = function (db, emitter)
         classMethods: {
             sync: function (id)
             {
-                return this.findAll({ where: { parent_board: id } })
+                var subboards = this.findAll({ where: { parent_board: id }});
+                var threads = thread.findAll({ where: { board: id }});
+
+                return Promise.all([subboards, threads])
                     .then(function (instances)
                     {
-                        return {
-                            instances: instances,
+                        return [{
+                            instances: instances[0],
                             event: 'board:' + id + ':board-added'
-                        };
+                        },{
+                            instances: instances[1],
+                            event: 'board:' + id + ':thread-added'
+                        }];
                     });
             },
 
@@ -88,6 +95,15 @@ module.exports = function (db, emitter)
                     creator: board.creator,
                     title: board.title,
                     parent_board: id
+                });
+            },
+
+            'thread-added': function (id, thread)
+            {
+                return thread.create({
+                    creator: thread.creator,
+                    title: thread.title,
+                    board: id
                 });
             }
         }
