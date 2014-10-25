@@ -23,7 +23,7 @@ define(['knockout', 'socketio'], function (ko, io)
 
         this.posts = ko.observableArray([]).extend({coupling: {
             socket: socket,
-            channel: 'thread:' this.id,
+            channel: 'thread:' + this.id,
             delta: {
                 added: ':post-added',
                 removed: ':post-removed'
@@ -63,7 +63,7 @@ define(['knockout', 'socketio'], function (ko, io)
 
         this.equals = function (other)
         {
-            returm this.id === other.id;
+            return this.id === other.id;
         };
     };
 
