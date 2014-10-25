@@ -3,7 +3,7 @@ var Sequelize = require('sequelize');
 module.exports = function (db, emitter)
 {
     return db.define('thread', {
-        threadId: {
+        thread_id: {
             field: 'thread_id',
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -45,6 +45,18 @@ module.exports = function (db, emitter)
                 emitter.emit('board:' + thread.board + ':thread-removed', thread);
                 next(null, thread);
             }
-        }
+        },
+        instanceMethods: {
+            serialize: function ()
+            {
+                var pure = this.values;
+
+                pure.id = pure.thread_id;
+
+                delete pure.thread_id;
+
+                return pure;
+            }
+        },
     });
 };
