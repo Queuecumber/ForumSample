@@ -18,9 +18,7 @@ define(['knockout', 'application'], function (ko, application)
         {
             this.view().on('click', '.board', function (e)
             {
-                var boardItem = ko.dataFor(e.target);
-
-                application.boards().activate(boardItem);
+                application.boards().activate(e.binding);
             });
 
             this.view().on('click', '.add-board', function ()
