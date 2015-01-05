@@ -5,6 +5,7 @@ require.config({
             knockout: 'bower_components/knockout/dist/knockout',
             requirejs: 'bower_components/requirejs/require',
             domready: 'bower_components/domready/ready',
+            text: 'bower_components/requirejs-text/text',
             bootstrap: 'bower_components/bootstrap/dist/js/bootstrap',
             crossroads: 'bower_components/crosroads.js/dist/crossroads.min',
             application: 'bower_components/application/application',
@@ -26,10 +27,9 @@ require.config({
         }
 });
 
-require(['knockout', 'model'], function (application, model)
+require(['knockout', 'model', 'domready!'], function (application, model)
 {
     var m = new model();
 
-    application.model(m);
-    application.compose();
+
 });
