@@ -1,18 +1,18 @@
 [
     {
-        "name": "post",
-        "view": "components/post/post.html",
-        "viewModel": "components/post/post.js"
+        "name": "post-info",
+        "view": "components/post-info/post-info.html",
+        "viewModel": "components/post-info/post-info.js"
     },
     {
-        "name": "thread",
-        "view": "components/thread/thread.html",
-        "viewModel": "components/thread/thread.js"
+        "name": "thread-info",
+        "view": "components/thread-info/thread-info.html",
+        "viewModel": "components/thread-info/thread-info.js"
     },
     {
-        "name": "board",
-        "view": "components/board/board.html",
-        "viewModel": "components/board/board.js"
+        "name": "board-info",
+        "view": "components/board-info/board-info.html",
+        "viewModel": "components/board-info/board-info.js"
     },
     {
         "name": "add-board",
