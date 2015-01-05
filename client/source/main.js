@@ -4,7 +4,7 @@ require.config({
             jquery: 'bower_components/jquery/dist/jquery',
             knockout: 'bower_components/knockout/dist/knockout',
             requirejs: 'bower_components/requirejs/require',
-            domready: 'bower_components/domready/ready',
+            domReady: 'bower_components/requirejs-domready/domReady',
             text: 'bower_components/requirejs-text/text',
             bootstrap: 'bower_components/bootstrap/dist/js/bootstrap',
             crossroads: 'bower_components/crosroads.js/dist/crossroads.min',
@@ -28,8 +28,15 @@ require.config({
         }
 });
 
-require(['knockout', 'model', 'componentLoader', 'domready!'], function (application, model)
+require(['knockout', 'model', 'componentLoader', 'domReady!'], function (ko, model)
 {
     var m = new model();
-    ko.applyBindings(m);
+
+    var vm = {
+        model: m,
+
+        selectedBoard: ko.observable(m)
+    }
+
+    ko.applyBindings(vm);
 });
