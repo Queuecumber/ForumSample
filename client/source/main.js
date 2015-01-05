@@ -15,7 +15,8 @@ require.config({
             post: 'model/post',
             user: 'model/user',
             board: 'model/board',
-            remoteCollection: 'remoteCollection'
+            remoteCollection: 'remoteCollection',
+            componentLoader: 'componentLoader'
         },
         shim: {
             'boostrap': {
@@ -27,9 +28,8 @@ require.config({
         }
 });
 
-require(['knockout', 'model', 'domready!'], function (application, model)
+require(['knockout', 'model', 'componentLoader', 'domready!'], function (application, model)
 {
     var m = new model();
-
-
+    ko.applyBindings(m);
 });
