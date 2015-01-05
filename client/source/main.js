@@ -2,7 +2,7 @@ require.config({
         baseUrl: './',
         paths: {
             jquery: 'bower_components/jquery/dist/jquery',
-            knockout: 'bower_components/knockout-3.1.0/index',
+            knockout: 'bower_components/knockout/dist/knockout',
             requirejs: 'bower_components/requirejs/require',
             bootstrap: 'bower_components/bootstrap/dist/js/bootstrap',
             crossroads: 'bower_components/crosroads.js/dist/crossroads.min',
