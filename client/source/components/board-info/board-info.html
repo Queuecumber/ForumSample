@@ -2,8 +2,8 @@
     <button type="button" class="add-board btn btn-default">Add Board</button>
     <button type="button" class="add-thread btn btn-default">Add Thread</button>
 
-    <div data-name="addBoard" data-component="add-board"></div>
-    <div data-name="addThread" data-component="add-thread"></div>
+    <add-board name="addBoard"></add-board>
+    <add-thread name="addThread"></add-thread>
 </section>
 <div data-bind="with: model">
     <section class="panel panel-default" data-bind="visible: boards().length > 0">
