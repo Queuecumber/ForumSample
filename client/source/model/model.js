@@ -1,4 +1,4 @@
-define(['knockout', 'socketio', 'board', 'thread', 'remoteCollection'], function (ko, io, Board, Thread, remoteCollection)
+define(['knockout', 'socketio', 'board', 'thread', 'remoteCollection', 'routes'], function (ko, io, Board, Thread, remoteCollection)
 {
     var model = function ()
     {

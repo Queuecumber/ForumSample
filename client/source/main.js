@@ -26,7 +26,7 @@ require.config({
         }
 });
 
-require(['application', 'model', 'routes'], function (application, model)
+require(['application', 'model'], function (application, model)
 {
     var m = new model();
 
