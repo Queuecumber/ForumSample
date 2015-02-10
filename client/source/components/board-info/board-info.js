@@ -11,6 +11,9 @@ define(['knockout', 'application'], function (ko, application)
 
         this.activated.on(function (e, b)
         {
+            if(b.id !== null)
+                history.pushState({}, b.title(), '/b/' + b.id);
+
             this.model(b);
         }.bind(this));
 

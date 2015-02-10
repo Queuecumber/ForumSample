@@ -5,7 +5,8 @@ require.config({
             knockout: 'bower_components/knockout/dist/knockout',
             requirejs: 'bower_components/requirejs/require',
             bootstrap: 'bower_components/bootstrap/dist/js/bootstrap',
-            crossroads: 'bower_components/crosroads.js/dist/crossroads.min',
+            crossroads: 'bower_components/crossroads.js/dist/crossroads.min',
+            signals: 'bower_components/js-signals/dist/signals.min',
             application: 'bower_components/application/application',
             socketio: 'bower_components/socket.io-client/socket.io',
             model: 'model/model',
@@ -25,7 +26,7 @@ require.config({
         }
 });
 
-require(['application', 'model'], function (application, model)
+require(['application', 'model', 'routes'], function (application, model)
 {
     var m = new model();
 
