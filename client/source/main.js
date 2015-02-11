@@ -26,10 +26,15 @@ require.config({
         }
 });
 
-require(['application', 'model'], function (application, model)
+require(['application', 'model', 'routes'], function (application, model, router)
 {
     var m = new model();
 
     application.model(m);
     application.compose();
+
+    application.loaded.on(function ()
+    {
+        router.init();
+    });
 });

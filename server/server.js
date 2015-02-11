@@ -23,6 +23,7 @@ process.log = bunyan.createLogger({
 });
 
 // Import libraries
+var path = require('path');
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');

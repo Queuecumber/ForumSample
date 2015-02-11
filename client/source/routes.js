@@ -1,10 +1,10 @@
 define(['crossroads'], function (crossroads)
 {
-    crossroads.addRoute('b/2');
-    crossroads.addRoute('b/28');
+    crossroads.addRoute('b/{id}');
+    crossroads.addRoute('/');
     crossroads.routed.add(console.log, console);
 
-    var parsePath = function (e)
+    var parsePath = function ()
     {
         var location = document.location.pathname;
         crossroads.parse(location);
@@ -13,6 +13,11 @@ define(['crossroads'], function (crossroads)
     window.onpopstate = parsePath;
 
     return {
+        init: function ()
+        {
+            parsePath();
+        },
+
         setPath: function(title, path)
         {
             history.pushState({}, title, path);
