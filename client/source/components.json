@@ -1,27 +1,27 @@
 [
     {
         "name": "post-info",
-        "view": "components/post-info/post-info.html",
-        "viewModel": "components/post-info/post-info.js"
+        "view": "/components/post-info/post-info.html",
+        "viewModel": "/components/post-info/post-info.js"
     },
     {
         "name": "thread-info",
-        "view": "components/thread-info/thread-info.html",
-        "viewModel": "components/thread-info/thread-info.js"
+        "view": "/components/thread-info/thread-info.html",
+        "viewModel": "/components/thread-info/thread-info.js"
     },
     {
         "name": "board-info",
-        "view": "components/board-info/board-info.html",
-        "viewModel": "components/board-info/board-info.js"
+        "view": "/components/board-info/board-info.html",
+        "viewModel": "/components/board-info/board-info.js"
     },
     {
         "name": "add-board",
-        "view": "components/add-board/add-board.html",
-        "viewModel": "components/add-board/add-board.js"
+        "view": "/components/add-board/add-board.html",
+        "viewModel": "/components/add-board/add-board.js"
     },
     {
         "name": "add-thread",
-        "view": "components/add-thread/add-thread.html",
-        "viewModel": "components/add-thread/add-thread.js"
+        "view": "/components/add-thread/add-thread.html",
+        "viewModel": "/components/add-thread/add-thread.js"
     }
 ]

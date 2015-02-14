@@ -114,7 +114,7 @@ module.exports = function(grunt) {
                         src: 'bower_components/**/*.*',
                         dest: 'build/'
                     },
-                        
+
                 ]
             }
         }
@@ -132,11 +132,11 @@ module.exports = function(grunt) {
         var files = ['source/**/*.less'];
         var cssList = '';
         _.forEach(grunt.file.expand(files), function (file) {
-                cssList += '        <link rel="stylesheet" href="' + file.replace('source/','').replace('less','css') + '"/>\r\n';
+                cssList += '        <link rel="stylesheet" href="' + file.replace('source/','/').replace('less','css') + '"/>\r\n';
         });
         grunt.config.set('preprocess.dev.options.context.cssFiles', cssList);
     });
-    
+
     grunt.registerTask('clean', 'Clean up output files.', function (target) {
         var output = grunt.config('build');
         var files = [ 'build/**/*.*' ];
@@ -147,7 +147,7 @@ module.exports = function(grunt) {
         });
         return !this.errorCount;
     });
-    
+
     // Default task(s).
     grunt.registerTask('default', ['install', 'jshint']);
     grunt.registerTask('build', ['env:prd', 'clean', 'requirejs:build', 'less:build', 'copy:build', 'preprocess:prd']);
