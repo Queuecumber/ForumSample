@@ -42,7 +42,11 @@ server.use(session({
     }),
     secret: config.app.sessionSecret
 }));
-server.use(express.static(config.app.public));
+server.use('/', express.static(config.app.public));
+server.get('*', function(req, res, next)
+{
+    res.sendfile(path.resolve(path.join(config.app.public,'/index.html')));
+});
 
 app.start(http);
 
